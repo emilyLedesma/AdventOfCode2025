@@ -17,15 +17,30 @@ Foreach($Rotation in $Rotations) {
     
     #Reduce the full rotations from the amount
     While ($Amount -gt 100) {
+        $Password = $Password + 1
+
         $Amount = $Amount - 100
     }
+
+    #Record the starting position of the dial
+    $StartPosition = $DialPosition
 
     #Check if the dial will go over 99 or 0 and modify the dial position accordingly
     If ($Direction -eq 'L' -and $DialPosition - $Amount -lt 0) {
         $DialPosition = 100 + ($DialPosition - $Amount)
+
+        #Checking if the dial has passed 0 without starting or ending at 0
+        If ($DialPosition -ne 0 -and $StartPosition -ne 0) {
+            $Password = $Password + 1
+        }
     }
     ElseIf ($Direction -eq 'R' -and $DialPosition + $Amount -gt 99) {
         $DialPosition = ($DialPosition + $Amount) - 100
+
+        #Checking if the dial has passed 0 without starting or ending at 0
+        If ($DialPosition -ne 0 -and $StartPosition -ne 0) {
+            $Password = $Password + 1
+        }
     }
     ElseIf ($Direction -eq 'L') {
         $DialPosition = $DialPosition - $Amount
