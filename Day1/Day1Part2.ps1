@@ -1,7 +1,8 @@
+#Goal is to get the amount of times the dial touches 0 going through the rotations
 #Setting the input path to the input file 
 $InputPath = $PSScriptRoot + '.\Input.txt'
 
-#Initializing variables to get the final password and current dial positions
+#Initializing variables to get the final password and current dial position
 $Password = 0
 $DialPosition = 50
 
