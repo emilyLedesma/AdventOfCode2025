@@ -28,60 +28,44 @@ For ($Row = 0; $Row -lt $Diagram.Length; $Row++) {
         }
 
         If ($Row -ne 0) {
-            $AdjacentCell = $Diagram[$Row - 1][$Col]
-
-            If ($AdjacentCell -eq '@') {
+            If ($Diagram[$Row - 1][$Col] -eq '@') {
                 $Adjacent = $Adjacent + 1
             }
         } 
         If ($Row -ne $Diagram.Length - 1) {
-            $AdjacentCell = $Diagram[$Row + 1][$Col]
-
-            If ($AdjacentCell -eq '@') {
+            If ($Diagram[$Row + 1][$Col] -eq '@') {
                 $Adjacent = $Adjacent + 1
             }
         } 
 
         If ($Col -ne 0) {
-            $AdjacentCell = $Diagram[$Row][$Col - 1]
-
-            If ($AdjacentCell -eq '@') {
+            If ($Diagram[$Row][$Col - 1] -eq '@') {
                 $Adjacent = $Adjacent + 1
             }
         }
         If ($Col -ne $CurrentRow.Length - 1) {
-            $AdjacentCell = $Diagram[$Row][$Col + 1]
-
-            If ($AdjacentCell -eq '@') {
+            If ($Diagram[$Row][$Col + 1] -eq '@') {
                 $Adjacent = $Adjacent + 1
             }
         }
 
         If ($Row -ne 0 -and $Col -ne 0) {
-            $AdjacentCell = $Diagram[$Row - 1][$Col - 1]
-
-            If ($AdjacentCell -eq '@') {
+            If ($Diagram[$Row - 1][$Col - 1] -eq '@') {
                 $Adjacent = $Adjacent + 1
             }
         } 
         If ($Row -ne $Diagram.Length - 1 -and $Col -ne 0) {
-            $AdjacentCell = $Diagram[$Row + 1][$Col - 1]
-
-            If ($AdjacentCell -eq '@') {
+            If ($Diagram[$Row + 1][$Col - 1] -eq '@') {
                 $Adjacent = $Adjacent + 1
             }
         } 
         If ($Row -ne 0 -and $Col -ne $CurrentRow.Length - 1) {
-            $AdjacentCell = $Diagram[$Row - 1][$Col + 1]
-
-            If ($AdjacentCell -eq '@') {
+            If ($Diagram[$Row - 1][$Col + 1] -eq '@') {
                 $Adjacent = $Adjacent + 1
             }
         } 
         If ($Row -ne $Diagram.Length - 1 -and $Col -ne $CurrentRow.Length - 1) {
-            $AdjacentCell = $Diagram[$Row + 1][$Col + 1]
-
-            If ($AdjacentCell -eq '@') {
+            If ($Diagram[$Row + 1][$Col + 1] -eq '@') {
                 $Adjacent = $Adjacent + 1
             }
         } 
