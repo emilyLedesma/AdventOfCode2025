@@ -1,60 +1,37 @@
 #Goal is to get the amount of times the dial touches 0 going through the rotations
-#Setting the input path to the input file 
-$InputPath = $PSScriptRoot + '.\Input.txt'
-
 #Initializing variables to get the final password and current dial position
-$Password = 0
-$DialPosition = 50
+$password = 0
+$dialPosition = 50
 
 #Parsing the input into the rotation list
-$Input = Get-Content -Path $InputPath
-$Rotations = $Input -split ' '
+$data = Get-Content .\input.txt
 
 #Looping through each rotation and rotating the dial
-Foreach($Rotation in $Rotations) {
-    #Get the direction and the amount
-    $Direction = $Rotation[0]
-    $Amount = [int]$Rotation.Substring(1)
-    
-    #Reduce the full rotations from the amount
-    While ($Amount -gt 100) {
-        $Password = $Password + 1
-
-        $Amount = $Amount - 100
+switch ($data) {
+    #Get the starting position and full rotations
+    { $_ -ne $null } {
+        $startPosition = $dialPosition
+        $password += [math]::Floor([int]$_.Substring(1) / 100)
     }
-
-    #Record the starting position of the dial
-    $StartPosition = $DialPosition
-
-    #Check if the dial will go over 99 or 0 and modify the dial position accordingly
-    If ($Direction -eq 'L' -and $DialPosition - $Amount -lt 0) {
-        $DialPosition = 100 + ($DialPosition - $Amount)
-
-        #Checking if the dial has passed 0 without starting or ending at 0
-        If ($DialPosition -ne 0 -and $StartPosition -ne 0) {
-            $Password = $Password + 1
-        }
+    #Rotate
+    { $_[0] -eq 'L' } {
+        $dialPosition = $dialPosition - ([int]$_.Substring(1) % 100)
     }
-    ElseIf ($Direction -eq 'R' -and $DialPosition + $Amount -gt 99) {
-        $DialPosition = ($DialPosition + $Amount) - 100
-
-        #Checking if the dial has passed 0 without starting or ending at 0
-        If ($DialPosition -ne 0 -and $StartPosition -ne 0) {
-            $Password = $Password + 1
-        }
+    { $_[0] -eq 'R' } {
+        $dialPosition = $dialPosition + ([int]$_.Substring(1) % 100)
     }
-    ElseIf ($Direction -eq 'L') {
-        $DialPosition = $DialPosition - $Amount
-    } 
-    ElseIf ($Direction -eq 'R') {
-        $DialPosition = $DialPosition + $Amount
-    } 
-
-    #Check if the dial position is 0 and update the password
-    If ($DialPosition -eq 0) {
-        $Password = $Password + 1
+    #Fix position
+    { $dialPosition -lt 0 } {
+        $dialPosition += 100
+    }
+    { $dialPosition -gt 99 } {
+        $dialPosition -= 100
+    }
+    #Verify if 0 or passed 0
+    { $dialPosition -eq 0 -or ($_[0] -eq 'L' -and $startPosition -lt $dialPosition -and $startPosition -ne 0) -or ($_[0] -eq 'R' -and $startPosition -gt $dialPosition -and $startPosition -ne 0)} {
+        $password = $password + 1
     }
 }
 
 #Get the final password
-Write-Host $Password
+Write-Host $password
